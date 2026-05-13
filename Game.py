@@ -8,6 +8,7 @@ import math
 pygame.init()
 
 window = pygame.display.set_mode((800, 600))
+Fundojogo = pygame.image.load("Fundojogo.png")
 pygame.display.set_caption("Pássaro")
 
 game = True
@@ -18,7 +19,7 @@ while game:
         if event.type == pygame.QUIT:
             game = False
 
-    window.fill((255, 255, 255))
+    window.blit(Fundojogo, (0, 0))
     pygame.display.update()
 
 pygame.quit()
