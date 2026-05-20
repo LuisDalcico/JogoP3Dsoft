@@ -14,6 +14,8 @@ pipeMiddle = pygame.image.load("NicePng_nes-png_75.png")#imagem da parte de baix
 personagem = pygame.transform.scale(passaro, (80, 80)) #imagem redimensionada 
 personagemX = 100 #posição x do personagem
 personagemY = 100 #posição y do personagem
+personagemVX = 0 #velocidade x do personagem
+personagemVY = 0 #velocidade y do personagem
 obstáculo = pygame.transform.scale(pipeTop, (80,80))#redimensionando
 obstX = 800 #posição x do obstáculo
 obstY = 520 #posição y do obstáculo
@@ -31,9 +33,14 @@ while game:
             game = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                personagemY-=30 #Sempre que a tecla espaço é pressionada, o passaro sobe 30 pixels
-    personagemY+=1 #desce o passaro em 1 pixel a cada frame
+                personagemVY=-15 #Sempre que a tecla espaço é pressionada, o passaro sobe 30 pixels
+    personagemVY+=1 #desce o passaro em 1 pixel a cada frame
+    personagemY+=personagemVY
     obstX-=obstSpeed #o obstáculo se move em direção ao pássaro baseado no obstSpeed a cada frame
+    if personagemY<0 or personagemY>600:
+        personagemX=100
+        personagemY=100
+        personagemVY=0
     if obstX<-80:
         obstX = 800#faz o obstáculo voltar ao início após sair da tela
     window.blit(Fundojogo, (0, 0)) #desenha o fundo da janela do jogo 
