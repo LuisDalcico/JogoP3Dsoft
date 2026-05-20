@@ -22,8 +22,10 @@ obstY = 520 #posição y do obstáculo
 pygame.display.set_caption("Pássaro") #mostra o nome do jogo na barra da janela 
 relogio = pygame.time.Clock() #relogio para controlar a taxa de atualização do jogo
 obstSpeed = 5 #velocidade com a qual os obstáculos se moverão pela tela
+gravidade = 1 #valor pelo qual a velocidade y do pássaro é modificada todo frame
 
 game = True # condição para o jogo funcionar 
+
 
 while game:
     relogio.tick(60)#Limita o jogo a 60 fps
@@ -33,9 +35,13 @@ while game:
             game = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                personagemVY=-15 #Sempre que a tecla espaço é pressionada, o passaro sobe 30 pixels
-    personagemVY+=1 #desce o passaro em 1 pixel a cada frame
-    personagemY+=personagemVY
+                personagemVY=-15 #Sempre que a tecla espaço é pressionada, a velocidade y do pássaro se torna -15
+                gravidade*=0.75 #e a gravidade reduz em 25% até o jogador soltar a barra de espaço 
+        if event.type == pygame.KEYUP:
+             if event.key == pygame.K_SPACE:
+                  gravidade*=(1/0.75)#faz a gravidade voltar ao normar quando o jogador solta a barra de espaço
+    personagemVY+=gravidade #modifica a velocidade y do pássaro com base na graviade a cada frame
+    personagemY+=personagemVY #move o pássaro no eixo y baseado em sua velocidade y a cada frame
     obstX-=obstSpeed #o obstáculo se move em direção ao pássaro baseado no obstSpeed a cada frame
     if personagemY<0 or personagemY>600:
         personagemX=100
@@ -44,8 +50,9 @@ while game:
     if obstX<-80:
         obstX = 800#faz o obstáculo voltar ao início após sair da tela
     window.blit(Fundojogo, (0, 0)) #desenha o fundo da janela do jogo 
-    window.blit(personagem, (personagemX, personagemY)) #desenha o personagem
     window.blit(obstáculo, (obstX, obstY)) #desenha o obstáculo
+    window.blit(personagem, (personagemX, personagemY)) #desenha o personagem
+    
     pygame.display.update()
 
 pygame.quit()
